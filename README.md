@@ -31,7 +31,11 @@ Tools for telescope pointing analysis and solar observation support.
 Now you can run the command-line tools such as:
 
 ```bash
-poetry run check-errors-over-time --start-time "2025-12-21T00:00:00" --end-time "2025-12-21T03:00:00" --frequency "30min" --show-max-error --plot --save-plot result.png   --output results.csv
+poetry run check-errors-over-time \
+    --start-time "2025-12-21T00:00:00" \
+    --end-time "2025-12-21T03:00:00" \
+    --frequency "30min" --show-max-error \
+    --plot --save-plot result.png
 ```
 
 ---
