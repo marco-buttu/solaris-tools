@@ -51,10 +51,3 @@ poetry install --with dev
 ```bash
 ./run_tests.sh
 ```
-
----
-
-## Test Structure
-
-- Unit tests and property-based tests (via Hypothesis) are located in the `tests/` directory.
-- `pytest.ini` defines default behavior for test runs.
