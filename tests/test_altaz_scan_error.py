@@ -188,7 +188,6 @@ def test_module_docstrings_and_function_docs():
 
 def test_command_line_interface(tmp_path):
     """Test the CLI: the script should run and print something sensible."""
-    import sys
     import subprocess
 
     # Trova il path assoluto allo script
@@ -244,7 +243,6 @@ def test_command_line_interface(tmp_path):
 
 def test_command_line_interface_with_invalid_location(tmp_path):
     """Test CLI with wrong location value, should fail with error."""
-    import sys
     import subprocess
 
     script_path = os.path.abspath(
@@ -262,7 +260,6 @@ def test_command_line_interface_with_invalid_location(tmp_path):
 
 def test_command_line_interface_with_default_args(tmp_path):
     """Test CLI with no arguments (all defaults)."""
-    import sys
     import subprocess
 
     script_path = os.path.abspath(
@@ -292,9 +289,6 @@ def test_slerp_vec_identical_vectors():
 
 
 def test_command_line_concordia(tmp_path):
-    import sys
-    import os
-
     script_path = os.path.abspath(
         os.path.join(os.path.dirname(__file__), "..", "pointing", "altaz_scan_error.py")
     )

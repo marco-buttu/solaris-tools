@@ -1,18 +1,18 @@
 # Copyright (c) 2025 Marco Buttu
 # Author: Marco Buttu - marco.buttu@inaf.it
 # License: MIT License
-
 """
 This module computes the maximum and mean angular pointing errors, in horizontal
-(AltAz) coordinates, that occur when a telescope scans the Sun along Right Ascension (RA).
-It simulates both the ideal scan and a real scan that approximates the ideal trajectory
-using a finite number of control points and interpolation. The real scan uses spherical
-linear interpolation (slerp) between control points for a more realistic simulation.
+(AltAz) coordinates, that occur when a telescope scans the Sun along Right Ascension
+(RA). It simulates both the ideal scan and a real scan that approximates the ideal
+trajectory using a finite number of control points and interpolation. The real scan
+uses spherical linear interpolation (slerp) between control points for a more realistic
+simulation.
 
 Main features:
 - Calculates the ideal trajectory in AltAz (theoretical best path) for a scan along RA.
-- Simulates the real trajectory, which uses interpolation in AltAz between a user-defined
-  number of control points.
+- Simulates the real trajectory, which uses interpolation in AltAz between a
+  user-defined number of control points.
 - Computes the maximum and mean pointing errors between the ideal and real trajectories.
 
 This is useful for telescope control software developers and astronomers who want
@@ -45,8 +45,10 @@ def altaz_to_vec(az_deg, alt_deg):
     Convert azimuth and altitude angles (in degrees) to a 3D unit vector.
 
     Parameters:
-        az_deg (float or array): Azimuth angle(s) in degrees [0-360], measured from North.
-        alt_deg (float or array): Altitude angle(s) in degrees [−90 (horizon) to +90 (zenith)].
+        - az_deg (float or array): Azimuth angle(s) in degrees [0-360], measured
+          from North.
+        - alt_deg (float or array): Altitude angle(s) in degrees [−90 (horizon)
+          to +90 (zenith)].
 
     Returns:
         numpy.ndarray: Array of shape (..., 3) with the [x, y, z] unit vectors.
@@ -178,16 +180,18 @@ def compute_real_trajectory(
     trajectory matches the ideal one (error = 0).
 
     Parameters:
-        location (EarthLocation): Observer's location on Earth.
-        observation_time (Time): Start time of the scan (UTC).
-        scan_duration_sec (float): Total duration of the scan, in seconds.
-        scan_length_deg (float): Total length of the scan, in degrees (in RA).
-        delay_time (float): How much the scan is delayed (in seconds).
-        n_interp (int): Number of *intermediate* control points (total control points = n_interp + 2).
-        num_samples (int): Number of points in the output trajectory.
+        - location (EarthLocation): Observer's location on Earth.
+        - observation_time (Time): Start time of the scan (UTC).
+        - scan_duration_sec (float): Total duration of the scan, in seconds.
+        - scan_length_deg (float): Total length of the scan, in degrees (in RA).
+        - delay_time (float): How much the scan is delayed (in seconds).
+        - n_interp (int): Number of *intermediate* control points (total control
+          points = n_interp + 2).
+        - num_samples (int): Number of points in the output trajectory.
 
     Returns:
-        SkyCoord: The real (approximated) trajectory as AltAz positions at the right times.
+        SkyCoord: The real (approximated) trajectory as AltAz positions at the
+        right times.
     """
     # Get the Sun's center coordinates at the observation time
     sun_coord = get_sun(observation_time).transform_to("icrs")
@@ -214,12 +218,14 @@ def compute_real_trajectory(
     ctrl_vecs = altaz_to_vec(cpoints_altaz.az.deg, cpoints_altaz.alt.deg)
     ctrl_times_jd = cpoints_altaz.obstime.jd
 
-    # Create num_samples points, distributed proportionally along the full scan (from 0 to 1)
+    # Create num_samples points, distributed proportionally along the
+    # full scan (from 0 to 1)
     t_global = np.linspace(0, 1, num_samples)
     n_segments = len(ctrl_vecs) - 1
     seg_edges = np.linspace(0, 1, n_segments + 1)  # Edges of the segments
 
-    # For each sample t_global, find which segment it is in, and the local position in the segment (t_local)
+    # For each sample t_global, find which segment it is in, and the local position
+    # in the segment (t_local)
     seg_idx = np.searchsorted(seg_edges, t_global, side="right") - 1
     seg_idx = np.clip(seg_idx, 0, n_segments - 1)
     t_local = (t_global - seg_edges[seg_idx]) / (seg_edges[1] - seg_edges[0])
@@ -259,13 +265,14 @@ def compute_errors(
     the ideal and real scan trajectories in AltAz coordinates.
 
     Parameters:
-        location (EarthLocation): Observer's location.
-        observation_time (Time): Start time of the scan.
-        scan_duration_sec (float): Scan duration, in seconds.
-        scan_length_deg (float): Scan length, in degrees (RA).
-        delay_time (float): Delay in seconds (between ideal and real scan).
-        n_interp (int): Number of intermediate control points (see compute_real_trajectory).
-        num_samples (int): Number of points in each trajectory.
+        - location (EarthLocation): Observer's location.
+        - observation_time (Time): Start time of the scan.
+        - scan_duration_sec (float): Scan duration, in seconds.
+        - scan_length_deg (float): Scan length, in degrees (RA).
+        - delay_time (float): Delay in seconds (between ideal and real scan).
+        - n_interp (int): Number of intermediate control points
+          (see compute_real_trajectory).
+        - num_samples (int): Number of points in each trajectory.
 
     Returns:
         tuple: (max_error, mean_error), both as astropy Quantity in arcseconds.
@@ -296,8 +303,9 @@ def compute_errors(
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Compute pointing error in AltAz due to delay and path interpolation. "
-        "The real trajectory uses spherical interpolation between AltAz control points."
+        description="Compute pointing error in AltAz due to delay and path "
+        "interpolation. The real trajectory uses spherical interpolation "
+        "between AltAz control points."
     )
     parser.add_argument(
         "-d",

@@ -43,25 +43,9 @@ poetry run check-errors-over-time --start-time "2025-12-21T00:00:00" --end-time 
 poetry install --with dev
 ```
 
-### Run all tests
+### Run all tests, coverage and linter
 ```bash
-poetry run pytest
-```
-
-### Run test coverage
-```bash
-poetry run coverage run -m pytest
-poetry run coverage report -m
-```
-
-### Run linting
-```bash
-poetry run ruff .
-```
-
-### Using Nox (optional automation)
-```bash
-poetry run nox
+./run_tests.sh
 ```
 
 ---

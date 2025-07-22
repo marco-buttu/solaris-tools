@@ -1,0 +1,6 @@
+*__pycache__
+result*.*
+*.swp
+.coverage
+.hypothesis
+covtests.sh

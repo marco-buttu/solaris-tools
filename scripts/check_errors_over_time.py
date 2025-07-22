@@ -4,8 +4,9 @@
 # License: MIT License
 
 """
-This script samples the pointing error in AltAz coordinates over a specified time range,
-at a given sampling frequency. It leverages the functions from the altaz_scan_error module.
+This script samples the pointing error in AltAz coordinates over a specified time
+range, at a given sampling frequency. It leverages the functions from the
+altaz_scan_error module.
 
 Parameters:
 - --start-time / -a: ISO format start time of the range (e.g., 2025-12-21T00:00:00).
@@ -14,17 +15,20 @@ Parameters:
 - --show-max-error: Include maximum error in output.
 - --show-mean-error: Include mean error in output.
 - --plot: Show the plot (only for selected error types).
-- --save-plot filename.png: Save the plot to the specified file (extension must be supported by matplotlib).
+- --save-plot filename.png: Save the plot to the specified file (extension must be
+    supported by matplotlib).
 - --output filename.csv: Save results as CSV file.
 - Other parameters are the same as altaz_scan_error CLI arguments.
 
 Example usage:
-python check_errors_over_time.py -a "2025-12-21T00:00:00" -b "2025-12-21T03:00:00" --frequency "30min" --show-max-error --show-mean-error --plot --save-plot result.png --output result.csv
+python check_errors_over_time.py -a "2025-12-21T00:00:00" -b "2025-12-21T03:00:00"
+--frequency "30min" --show-max-error --show-mean-error --plot --save-plot result.png
+--output result.csv
 """
 
 import argparse
 import os
-from astropy.time import Time, TimeDelta
+from astropy.time import Time
 import astropy.units as u
 import numpy as np
 import matplotlib.pyplot as plt
@@ -119,12 +123,14 @@ def main():
         _, ext = os.path.splitext(args.save_plot)
         if ext.lower() not in VALID_PLOT_EXTENSIONS:
             raise ValueError(
-                f"Unsupported plot file extension: {ext}. Supported: {VALID_PLOT_EXTENSIONS}"
+                f"Unsupported plot file extension: {ext}. "
+                f"Supported: {VALID_PLOT_EXTENSIONS}"
             )
 
     if not args.show_max_error and not args.show_mean_error:
         print(
-            "No output type selected: use --show-max-error, --show-mean-error or both."
+            "No output type selected: use --show-max-error, "
+            "--show-mean-error or both."
         )
         return
 
@@ -162,7 +168,7 @@ def main():
     max_of_max_errors = max(r[1] for r in results)
     mean_of_mean_errors = np.mean([r[2] for r in results])
 
-    print(f"\nSummary:")
+    print("\nSummary:")
     if args.show_max_error:
         print(f"Maximum of max errors: {max_of_max_errors:.2f} arcsec")
     if args.show_mean_error:
