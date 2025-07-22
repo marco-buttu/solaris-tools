@@ -27,3 +27,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 check-errors-over-time = "scripts.check_errors_over_time:main"
+plot-trajectories = "scripts.plot_trajectories:main"

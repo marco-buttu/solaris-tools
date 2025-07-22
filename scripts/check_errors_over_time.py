@@ -129,8 +129,7 @@ def main():
 
     if not args.show_max_error and not args.show_mean_error:
         print(
-            "No output type selected: use --show-max-error, "
-            "--show-mean-error or both."
+            "No output type selected: use --show-max-error, --show-mean-error or both."
         )
         return
 
