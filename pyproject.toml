@@ -12,6 +12,7 @@ python = ">=3.11"
 astropy = ">=7.1"
 numpy = ">=2.0"
 matplotlib = "*"
+scikit-learn = "^1.7.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "*"
