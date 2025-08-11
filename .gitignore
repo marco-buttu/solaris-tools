@@ -4,3 +4,5 @@ result*.*
 .coverage
 .hypothesis
 covtests.sh
+*.joblib
+fit_results.txt
