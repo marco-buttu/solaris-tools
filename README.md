@@ -48,6 +48,27 @@ poetry install --with dev
 ```
 
 ### Run all tests, coverage and linter
+
+To run only the linter:
+
 ```bash
-./run_tests.sh
+tox -e lint
+```
+
+To apply formatting locally (modifies files):
+
+```bash
+tox -e format
+```
+
+To run tests on other Python versions if available:
+
+```bash
+tox -e py310,py311
+```
+
+Finally, without arguments it runs lint + format-check + tests (py313):
+
+```bash
+tox
 ```

@@ -110,7 +110,7 @@ def parse_args():
         choices=["azimuth", "elevation", "both"],
         default="both",
         help="Which quantity to plot: 'azimuth', 'elevation', or 'both' "
-             "(default: both)",
+        "(default: both)",
     )
     parser.add_argument(
         "--save-plot",

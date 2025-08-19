@@ -18,13 +18,14 @@ Usage examples:
 python fit_offset_models.py ../templates/offsets_example.tsv --plot
 
 # Fit models of degree 3 and save results
-python fit_offset_models.py ../templates/offsets_example.tsv --degree 3 --output results.txt
+python fit_offset_models.py ../templates/offsets_example.tsv --degree 3 \
+       --output results.txt
 
 # Predict offset_az at 125 degrees azimuth
-python fit_offset_models.py dummy.tsv --predict_az 125
+python fit_offset_models.py ../templates/offsets_example.tsv --predict_az 125
 
 # Predict offset_el at 40 degrees elevation
-python fit_offset_models.py dummy.tsv --predict_el 40
+python fit_offset_models.py ../templates/offsets_example.tsv --predict_el 40
 """
 
 import argparse
@@ -76,6 +77,7 @@ def load_data(filepath):
     df = df.dropna(subset=["azimuth", "elevation", "offset_az", "offset_el"])
     return df
 
+
 def plot_fit(x_raw, y_raw, x_clean, y_clean, model, xlabel, ylabel, title):
     """Plot model vs data."""
     x_plot = np.linspace(min(x_clean), max(x_clean), 200)
@@ -91,6 +93,7 @@ def plot_fit(x_raw, y_raw, x_clean, y_clean, model, xlabel, ylabel, title):
 
 def save_model(model, filename):
     joblib.dump(model, filename)
+
 
 def save_summary(filename, model_az, r2_az, model_el, r2_el):
     """Save model summary to text file."""
@@ -109,13 +112,23 @@ def load_model(filename):
 
 def main():
     # Main CLI entry point
-    parser = argparse.ArgumentParser(description="Fit and save telescope pointing offset models.")
+    parser = argparse.ArgumentParser(
+        description="Fit and save telescope pointing offset models."
+    )
     parser.add_argument("tsv_file", help="Path to the input TSV file")
-    parser.add_argument("--degree", type=int, default=2, help="Polynomial degree (default: 2)")
+    parser.add_argument(
+        "--degree", type=int, default=2, help="Polynomial degree (default: 2)"
+    )
     parser.add_argument("--plot", action="store_true", help="Show plots")
-    parser.add_argument("--output", default="fit_results.txt", help="Output text file for summary")
-    parser.add_argument("--predict_az", type=float, help="Predict offset_az for a given azimuth")
-    parser.add_argument("--predict_el", type=float, help="Predict offset_el for a given elevation")
+    parser.add_argument(
+        "--output", default="fit_results.txt", help="Output text file for summary"
+    )
+    parser.add_argument(
+        "--predict_az", type=float, help="Predict offset_az for a given azimuth"
+    )
+    parser.add_argument(
+        "--predict_el", type=float, help="Predict offset_el for a given elevation"
+    )
     args = parser.parse_args()
 
     # Prediction mode
@@ -131,13 +144,17 @@ def main():
     # Fit mode
     df = load_data(args.tsv_file)
 
-    model_az, x_az, y_az, r2_az = fit_with_zscore(df["azimuth"], df["offset_az"], degree=args.degree)
+    model_az, x_az, y_az, r2_az = fit_with_zscore(
+        df["azimuth"], df["offset_az"], degree=args.degree
+    )
     print("\nModel: offset_az = f(azimuth)")
     print(model_az)
     print(f"R² = {r2_az:.4f}")
     save_model(model_az, "model_offset_az.joblib")
 
-    model_el, x_el, y_el, r2_el = fit_with_zscore(df["elevation"], df["offset_el"], degree=args.degree)
+    model_el, x_el, y_el, r2_el = fit_with_zscore(
+        df["elevation"], df["offset_el"], degree=args.degree
+    )
     print("\nModel: offset_el = f(elevation)")
     print(model_el)
     print(f"R² = {r2_el:.4f}")
@@ -149,11 +166,30 @@ def main():
     if args.plot:
         plt.figure(figsize=(12, 5))
         plt.subplot(1, 2, 1)
-        plot_fit(df["azimuth"], df["offset_az"], x_az, y_az, model_az, "Azimuth (deg)", "Offset Az (arcsec)", "offset_az vs azimuth")
+        plot_fit(
+            df["azimuth"],
+            df["offset_az"],
+            x_az,
+            y_az,
+            model_az,
+            "Azimuth (deg)",
+            "Offset Az (arcsec)",
+            "offset_az vs azimuth",
+        )
         plt.subplot(1, 2, 2)
-        plot_fit(df["elevation"], df["offset_el"], x_el, y_el, model_el, "Elevation (deg)", "Offset El (arcsec)", "offset_el vs elevation")
+        plot_fit(
+            df["elevation"],
+            df["offset_el"],
+            x_el,
+            y_el,
+            model_el,
+            "Elevation (deg)",
+            "Offset El (arcsec)",
+            "offset_el vs elevation",
+        )
         plt.tight_layout()
         plt.show()
+
 
 if __name__ == "__main__":
     main()
