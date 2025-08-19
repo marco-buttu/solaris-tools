@@ -18,9 +18,9 @@ scikit-learn = "^1.7.1"
 pytest = "*"
 hypothesis = "*"
 coverage = "*"
-nox = "*"
 ruff = "*"
 pytest-cov = "^6.2.1"
+tox = "^4.28.4"
 
 [build-system]
 requires = ["poetry-core"]

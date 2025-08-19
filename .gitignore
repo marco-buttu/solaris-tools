@@ -6,3 +6,5 @@ result*.*
 covtests.sh
 *.joblib
 fit_results.txt
+.tox/
+coverage.xml
